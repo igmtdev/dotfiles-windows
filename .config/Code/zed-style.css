@@ -1,0 +1,54 @@
+.monaco-breadcrumbs {
+  background-color: #141414 !important;
+  border-bottom: 1px solid #333333 !important;
+  height: 40px !important;
+  min-height: 40px !important;
+  padding-left: 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.breadcrumbs-control {
+  background-color: #141414 !important;
+  height: 40px !important;
+}
+
+.monaco-breadcrumb-item {
+  font-family:
+    "JetBrains Mono NL", "JetBrains Mono", "Zed Mono", monospace !important;
+  font-size: 13px !important;
+  color: #666666 !important;
+  line-height: 40px !important;
+  letter-spacing: 0.2px !important;
+}
+
+.monaco-breadcrumb-item:hover,
+.monaco-breadcrumb-item.active {
+  color: #999999 !important;
+}
+
+.monaco-breadcrumbs .codicon-chevron-right::before,
+.monaco-breadcrumbs .codicon-breadcrumb-separator::before {
+  content: "/" !important;
+  font-family: "JetBrains Mono NL", monospace !important;
+  font-size: 13px !important;
+  opacity: 0.3 !important;
+  margin: 0 4px !important;
+}
+
+.monaco-breadcrumbs-container {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.sidebar {
+  font-family: "JetBrains Mono NL", monospace !important;
+}
+
+.quick-input-widget {
+  font-family: "JetBrains Mono NL", monospace !important;
+}
+
+.tab-label {
+  font-family: "JetBrains Mono NL", monospace !important;
+}

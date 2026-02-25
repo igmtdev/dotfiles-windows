@@ -1,0 +1,17 @@
+# Bat configuration file
+# See: https://github.com/sharkdp/bat#configuration-file
+
+# Use Vesper theme
+--theme="Vesper"
+
+# Show line numbers
+# --style="numbers,changes,header"
+
+# Use italic text for comments (if terminal supports it)
+--italic-text=always
+
+# Set the pager
+--paging=auto
+
+# Wrap long lines
+--wrap=auto

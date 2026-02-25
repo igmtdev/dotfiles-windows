@@ -1,0 +1,261 @@
+"$schema" = "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json"
+console_title_template = "{{ .Shell }} in {{ .Folder }}"
+final_space = true
+version = 3
+
+#! ═══════════════════════════════════════════════════════════════════════════
+#! DIAMOND STYLE vs POWERLINE STYLE - Symbol Rendering Differences
+#! ═══════════════════════════════════════════════════════════════════════════
+#
+# DIAMOND STYLE:
+# - leading_diamond & trailing_diamond symbols are FILLED/SOLID
+# - Diamond symbols take the segment's BACKGROUND color as their fill color
+# - Symbols sit on a TRANSPARENT background
+# - Used for decorative "caps" at segment edges
+#
+# Example with diamond style:
+# ┌──────────┬──
+# │  vngrg   │█  <- Solid filled triangle (color = #FFC799)
+# └──────────┴──
+#  #FFC799
+#
+# Result: vngrg ■ (the ■ represents a solid filled symbol)
+#
+# ───────────────────────────────────────────────────────────────────────────
+#
+# POWERLINE STYLE:
+# - powerline_symbol creates COLOR TRANSITIONS between segments
+# - Symbol foreground = PREVIOUS segment's background color
+# - Symbol background = CURRENT segment's background color
+# - Creates a seamless "connecting arrow" effect between segments
+#
+# Example with powerline style connecting two segments:
+# ┌──────────┬──────────┐
+# │  vngrg   │>│  path   │  <- The > is a transition (not solid)
+# └──────────┴──────────┘
+#  #FFC799   ↑  #161616
+#            └─ Arrow uses #FFC799 → #161616 transition
+#
+# Result: vngrg  path  (the  represents a color-transitioning arrow)
+#
+#! ═══════════════════════════════════════════════════════════════════════════
+
+#! ═══════════════════════════════════════════════════════════════════════════
+#! CONNECTING DIAMOND AND POWERLINE SEGMENTS
+#! ═══════════════════════════════════════════════════════════════════════════
+
+# ❌ PROBLEM: With trailing_diamond on diamond segment
+# 
+# Diamond segment:    icon  (has trailing_diamond)
+# Powerline segment:   path  (creates leading AND trailing)
+# 
+# Result: icon >> path >
+#              ↑↑ duplicate arrows at connection!
+
+# ✅ SOLUTION: Remove trailing_diamond from diamond segment
+#
+# Diamond segment:    icon (no trailing_diamond)
+# Powerline segment:  > path > (powerline creates both arrows)
+#
+# Result: icon > path >
+#              ↑ clean single arrow connection!
+
+#! ═══════════════════════════════════════════════════════════════════════════
+
+
+[[blocks]]
+alignment = "left"
+type = "prompt"
+
+[[blocks.segments]]
+type = "os"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = " {{.Icon}} "
+
+[[blocks.segments]]
+type = "session"
+background = "#FFC799"
+foreground = "#101010"
+style = "powerline"
+template = "{{ .UserName }} "
+
+[[blocks.segments]]
+type = "text"
+background = "#E6B38A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = "<parentBackground></>" # To create an empty blocks segments so the powerline_symbol will display
+
+[[blocks.segments]]
+type = "text"
+background = "#CC9F7A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = "<parentBackground></>" # To create an empty blocks segments so the powerline_symbol will display
+
+[[blocks.segments]]
+type = "text"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "<transparent>\ue0b0</>"
+template = " \uf07c "
+
+[[blocks.segments]]
+background = "#161616"
+foreground = "#ffffff"
+style = "powerline"
+powerline_symbol = "\ue0b0"
+template = " {{ .Path }} "
+type = "path"
+
+[blocks.segments.properties]
+style = "folder"
+folder_separator_icon = " \ue0b1 "
+home_icon = "~"
+
+[[blocks.segments]]
+type = "git"
+background = "#FFC799"
+background_templates = [
+  "{{ if or (.Working.Changed) (.Staging.Changed) }}#99FFE4{{ end }}",
+  "{{ if and (gt .Ahead 0) (gt .Behind 0) }}#FF8080{{ end }}",
+  "{{ if gt .Ahead 0 }}#FF8080{{ end }}",
+  "{{ if gt .Behind 0 }}#FF8080{{ end }}"
+]
+foreground = "#101010"
+leading_diamond = "<transparent>\ue0b0</>"
+style = "diamond"
+template = "{{ .UpstreamIcon }} {{ .HEAD }}{{if .BranchStatus }} {{ .BranchStatus }}{{ end }}{{ if .Working.Changed }} {{ .Working.String }}{{ end }}{{ if and (.Working.Changed) (.Staging.Changed) }} |{{ end }}{{ if .Staging.Changed }} {{ .Staging.String }}{{ end }}{{ if gt .StashCount 0 }} {{ .StashCount }}{{ end }} "
+trailing_diamond = "\ue0b0"
+
+[blocks.segments.properties]
+branch_max_length = 25
+fetch_stash_count = true
+fetch_status = true
+fetch_upstream_icon = true
+
+# [blocks.segments.properties.mapped_branches]
+# "feat/*" = "🚀 "
+# "bug/*" = "🐛 "
+
+[[blocks]]
+alignment = "right"
+type = "prompt"
+
+[[blocks.segments]]
+type = "react"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue7ba {{ .Full }} "
+
+[[blocks.segments]]
+type = "tauri"
+background = "#FFC799"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue8bb {{ .Full }} "
+
+[[blocks.segments]]
+type = "rust"
+background = "#FF8080"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue7a8 {{ .Full }} "
+
+[[blocks.segments]]
+type = "go"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue627 {{ .Full }} "
+
+[[blocks.segments]]
+type = "lua"
+background = "#B9AEDA"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = " \ue620 {{ .Full }} "
+
+[[blocks.segments]]
+type = "node"
+background = "#161616"
+foreground = "#FFFFFF"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = "{{ if .PackageManagerIcon }}{{ .PackageManagerIcon }} {{ end }}{{ .Full }} "
+trailing_diamond = "<transparent,#161616>\ue0b2</>"
+
+[blocks.segments.properties]
+fetch_package_manager = true
+npm_icon = " <#99FFE4>\uE71E</> "
+bun_icon = " <#FFFFFF>\ue76f</> "
+pnpm_icon = " <#FFC799>\ue865</> "
+
+[[blocks.segments]]
+type = "claude"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+leading_diamond = "\ue0b2"
+template = " \uee0d {{ .Model.DisplayName }} \uf2d0 {{ .TokenUsagePercent.Gauge }} "
+trailing_diamond = "<transparent,#FFC799>\ue0b2</>"
+
+[[blocks.segments]]
+type = "text"
+background = "#CC9F7A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = "<parentBackground></>" # To create an empty blocks segments so the powerline_symbol will display
+
+[[blocks.segments]]
+type = "text"
+background = "#E6B38A"
+foreground = "#101010"
+style = "powerline"
+powerline_symbol = "\ue0b2"
+invert_powerline = true
+template = "<parentBackground></>" # To create an empty blocks segments so the powerline_symbol will display
+
+[[blocks.segments]]
+type = "time"
+background = "#FFC799"
+foreground = "#101010"
+style = "diamond"
+template = " \uf4ab {{ .CurrentDate | date .Format }} "
+trailing_diamond = "\ue0b0"
+
+[[blocks]]
+alignment = "left"
+newline = true
+type = "prompt"
+
+[[blocks.segments]]
+type = "status"
+foreground = "#FFC799"
+foreground_templates = [
+  "{{ if gt .Code 0 }}#FF8080{{ end }}"
+]
+style = "plain"
+template = "\u276f"
+
+[blocks.segments.properties]
+always_enabled = true
